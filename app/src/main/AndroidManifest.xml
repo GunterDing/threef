@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.threef">
+
+    <!-- 阿里云推送相关权限 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!--极光-->
+    <!-- Required -->
+    <!--<permission-->
+        <!--android:name="com.threef.permission.JPUSH_MESSAGE"-->
+        <!--android:protectionLevel="signature" />-->
+    <!--<uses-permission android:name="com.threef.permission.JPUSH_MESSAGE" />-->
+    <!--<uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />-->
+    <!--&lt;!&ndash; Optional. Required for location feature &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> &lt;!&ndash; 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />-->
+    <!--<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />-->
+
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--阿里云-->
+        <meta-data android:name="com.alibaba.app.appkey" android:value="25050881"/> <!-- 请填写你自己的- appKey -->
+        <meta-data android:name="com.alibaba.app.appsecret" android:value="3b92817686b0b8498a1669ce43e5e62e"/> <!-- 请填写你自己的appSecret -->
+        <!-- 消息接收监听器 （用户可自主扩展） -->
+        <receiver
+            android:name=".aliyun.MyMessageReceiver"
+            android:exported="false"> <!-- 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 -->
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
+        <!--极光-->
+
+        <receiver
+            android:name=".jpush.MyReceiver"
+            android:enabled="true"
+            android:exported="false"
+            tools:node="replace">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.threef" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
